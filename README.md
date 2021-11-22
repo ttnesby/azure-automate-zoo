@@ -20,8 +20,8 @@ If you can read the code, you are ready for any pwsh script!
 # dot source the blackjack.ps1 - will make it available as a function
 . ./src/blackjack.ps1
 
-# execute the function
-blackjack
+# execute the function, json as result
+blackjack -asJson
 
 # output example
 {                                                                                                              
@@ -35,4 +35,15 @@ blackjack
     "cards": "D10 H8 "
   }
 }
+
+# execute the function, hash table as result
+blackjack
+
+# output example
+Name                           Value
+----                           -----
+winner                         me
+me                             {score, cards}
+magnus                         {score, cards}
+
 ```

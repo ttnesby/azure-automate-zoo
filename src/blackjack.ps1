@@ -11,7 +11,8 @@ function blackjack {
     param(
         $me = @(),
         $magnus = @(),
-        $doc = ((Invoke-WebRequest -Uri $urlDOC).Content | ConvertFrom-Json)
+        $doc = ((Invoke-WebRequest -Uri $urlDOC).Content | ConvertFrom-Json),
+        [switch]$asJson = $false
     )
 
     $function:cardScore = { param($card)
@@ -45,8 +46,9 @@ function blackjack {
     
     $function:bjResult = { param($winner, [object[]]$me, [object[]]$magnus)
         $status = { param($d) [ordered]@{ score = (docScore $d); cards = (docShow $d) } }
-    
-        [ordered]@{ winner = $winner; me = (&$status $me); magnus = (&$status $magnus) } | ConvertTo-Json
+        $result = { [ordered]@{ winner = $winner; me = (&$status $me); magnus = (&$status $magnus) } }
+
+        & { param($ht) if ($asJson) { ConvertTo-Json -InputObject $ht } else { $ht } } (&$result)
     }
 
     $function:bjloop = { param($me, $magnus, $doc)
