@@ -1,6 +1,6 @@
 # azure-automate-zoo
 
-`src/blackjack.ps1` is a lambda calculus oriented programming, containing a powershell function `blackjack`. 
+`src/blackjack.psm1` is a lambda calculus oriented module, containing function `blackjack`. 
 
 Consider the function as a kind of `function zoo` :-)
 
@@ -17,8 +17,8 @@ If you can read the code, you are ready for any pwsh script!
 
 # Test the function
 ```powershell
-# dot source the blackjack.ps1 - will make it available as a function
-. ./src/blackjack.ps1
+# import blackjack.psm1
+import-module ./src/blackjack.ps1
 
 # execute the function, json as result
 blackjack -asJson
@@ -36,14 +36,11 @@ blackjack -asJson
   }
 }
 
-# execute the function, hash table as result
+# execute the function, PSCustomObject as result
 blackjack
 
 # output example
-Name                           Value
-----                           -----
-winner                         me
-me                             {score, cards}
-magnus                         {score, cards}
-
+winner me             magnus
+------ --             ------
+me     {score, cards} {score, cards}
 ```

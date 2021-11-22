@@ -1,4 +1,4 @@
-1..10 | ForEach-Object -Parallel { 
-    . "./src/blackjack.ps1"
+1..1000 | ForEach-Object -Parallel { 
+    import-module "./src/blackjack.psm1"
     blackjack 
-} | Group-Object -NoElement {$_.winner} | Sort-Object {$_.winner}
+} | Group-Object -Property winner -NoElement | Sort-Object -Property winner

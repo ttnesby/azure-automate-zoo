@@ -1,17 +1,11 @@
-[CmdletBinding()]
-param (
-    [Parameter(HelpMessage = "URL to deck of cards (doc)", Mandatory = $false)]
-    [string]
-    $urlDOC = 'http://nav-deckofcards.herokuapp.com/shuffle'
-)
-
 $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
 
 function blackjack {
     param(
         $me = @(),
         $magnus = @(),
-        $doc = ((Invoke-WebRequest -Uri $urlDOC).Content | ConvertFrom-Json),
+        $urlDOC = 'http://nav-deckofcards.herokuapp.com/shuffle',
+        [scriptblock] $docInit = { (Invoke-WebRequest -Uri $urlDOC).Content | ConvertFrom-Json },
         [switch]$asJson = $false
     )
 
@@ -48,7 +42,9 @@ function blackjack {
         $status = { param($d) [ordered]@{ score = (docScore $d); cards = (docShow $d) } }
         $result = { [ordered]@{ winner = $winner; me = (&$status $me); magnus = (&$status $magnus) } }
 
-        & { param($ht) if ($asJson) { ConvertTo-Json -InputObject $ht } else { $ht } } (&$result)
+        & { param($ht) 
+            if ($asJson) { ConvertTo-Json -InputObject $ht } 
+            else { [pscustomobject]$ht } } (&$result)
     }
 
     $function:bjloop = { param($me, $magnus, $doc)
@@ -81,5 +77,7 @@ function blackjack {
         }
     }
 
-    bjloop $me $magnus $doc
+    bjloop $me $magnus (&$docInit)
 }
+
+Export-ModuleMember -Function @("blackjack")
