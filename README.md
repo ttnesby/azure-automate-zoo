@@ -7,7 +7,7 @@ Consider the function as a kind of `function zoo` :-)
 The learning points are;
 1. Each powershell function is a script block
 2. Script block can be defined in different ways
-3. Script block is a value and be a parameter into other script blocks
+3. Script block is a value and can be a parameter into other script blocks
 4. Script blocks can be anonymous
 5. Kind of doable in pwsh, but not recommended!
 
